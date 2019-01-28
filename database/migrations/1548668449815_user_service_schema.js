@@ -24,7 +24,6 @@ class UserServiceSchema extends Schema {
         .inTable("services")
         .onDelete("cascade")
         .index();
-      table.timestamps();
     });
   }
 
