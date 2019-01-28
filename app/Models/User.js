@@ -32,6 +32,10 @@ class User extends Model {
   tokens() {
     return this.hasMany("App/Models/Token");
   }
+
+  services() {
+    return this.belongsToMany("App/Models/Service").pivotTable("user_service");
+  }
 }
 
 module.exports = User;
