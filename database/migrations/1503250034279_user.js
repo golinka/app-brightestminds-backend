@@ -10,10 +10,14 @@ class UserSchema extends Schema {
         .notNullable()
         .unique();
       table
-        .string("email", 254)
+        .string("email", 255)
         .notNullable()
         .unique();
       table.string("password", 60).notNullable();
+      table.string("fname", 35).notNullable();
+      table.string("lname", 45);
+      table.string("phone", 25);
+      table.string("company", 150);
       table.timestamps();
     });
   }
