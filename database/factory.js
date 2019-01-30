@@ -10,10 +10,35 @@
 */
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
-// const Factory = use('Factory')
+const Factory = use("Factory");
 
-// Factory.blueprint('App/Models/User', (faker) => {
-//   return {
-//     username: faker.username()
-//   }
-// })
+Factory.blueprint("App/Models/User", (faker, index, data) => {
+  return {
+    username: data.username || faker.username(),
+    email: data.email || faker.email({ domain: "brightestminds.io" }),
+    password: data.password || faker.password(),
+    fname: data.fname || faker.first(),
+    lname: data.lname || faker.last(),
+    phone: data.phone || faker.phone(),
+    company: data.company || faker.company()
+  };
+});
+
+Factory.blueprint("App/Models/Product", (faker, index, data) => {
+  return {
+    title: data.title || faker.sentence({ words: 5 }),
+    description: data.description || faker.paragraph({ sentences: 2 }),
+    price: data.price || faker.integer({ min: 500, max: 3000 }),
+    period:
+      data.fname ||
+      faker.pick([
+        "Daily",
+        "Weekly",
+        "Monthly",
+        "Every 3 months",
+        "Every 6 months",
+        "Yearly"
+      ]),
+    is_private: data.is_private || faker.pick([true, false])
+  };
+});
