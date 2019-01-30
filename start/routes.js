@@ -36,11 +36,11 @@ Route.group(() => {
   Route.post("/users/:uid", "UserController.update");
   Route.delete("/users/:uid", "UserController.delete");
 
-  Route.get("/services", "UserController.index");
-  Route.post("/services", "UserController.store");
-  Route.get("/services/:sid", "UserController.show");
-  Route.post("/services/:sid", "UserController.update");
-  Route.delete("/services/:sid", "UserController.delete");
+  Route.get("/services", "ServiceController.index");
+  Route.post("/services", "ServiceController.store");
+  Route.get("/services/:sid", "ServiceController.show");
+  Route.post("/services/:sid", "ServiceController.update");
+  Route.delete("/services/:sid", "ServiceController.delete");
 })
   .prefix("api/v1")
   .middleware(["auth", "is:admin"]);
