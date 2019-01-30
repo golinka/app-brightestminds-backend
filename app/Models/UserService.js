@@ -9,6 +9,10 @@ class UserService extends Model {
   static get updatedAtColumn() {
     return null;
   }
+
+  services() {
+    return this.belongsToMany("App/Models/Service").withPivot(["service_id"]);
+  }
 }
 
 module.exports = UserService;

@@ -42,7 +42,9 @@ class User extends Model {
   }
 
   services() {
-    return this.belongsToMany("App/Models/Service").pivotTable("user_service");
+    return this.belongsToMany("App/Models/Service").pivotModel(
+      "App/Models/UserService"
+    );
   }
 }
 
