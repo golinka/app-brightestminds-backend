@@ -14,18 +14,17 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
 
+Route.get("/", () => ({ status: "Ok", version: "1.0.0" }));
+
 Route.group(() => {
-  Route.post("/login", "AuthController.login");
+  Route.post("/login", "AuthController.login").middleware("guest");
   Route.get("/logout", "AuthController.logout");
 
   Route.get("/products", "ProductController.index");
   Route.get("/products/:pid", "ProductController.show");
-})
-  .prefix("api/v1")
-  .middleware("guest");
+}).prefix("api/v1");
 
 Route.group(() => {
-  Route.get("/products/all", "ProductController.indexAll");
   Route.post("/products", "ProductController.store");
   Route.post("/products/:pid", "ProductController.update");
   Route.delete("/products/:pid", "ProductController.delete");
