@@ -1,6 +1,6 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use("Model");
+const Boot = use("./Boot");
 
-class Product extends Model {}
+class Product extends Boot {}
 
 module.exports = Product;
