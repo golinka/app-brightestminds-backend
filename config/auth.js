@@ -71,7 +71,7 @@ module.exports = {
     password: "password",
     options: {
       secret: Env.get("APP_KEY"),
-      expiresIn: 21600
+      expiresIn: 7200
     }
   },
 
