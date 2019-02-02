@@ -1,7 +1,7 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use("Model");
+const Boot = use("./Boot");
 
-class Service extends Model {
+class Service extends Boot {
   static get createdAtColumn() {
     return null;
   }
