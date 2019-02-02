@@ -1,10 +1,10 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use("Model");
+const Boot = use("./Boot");
 
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use("Hash");
 
-class User extends Model {
+class User extends Boot {
   static boot() {
     super.boot();
 
@@ -42,9 +42,9 @@ class User extends Model {
   }
 
   services() {
-    return this.belongsToMany("App/Models/Service").pivotModel(
-      "App/Models/UserService"
-    );
+    return this.belongsToMany("App/Models/Service")
+      .pivotModel("App/Models/UserService")
+      .withPivot(["token"]);
   }
 }
 
