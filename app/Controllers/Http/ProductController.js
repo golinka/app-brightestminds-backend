@@ -11,7 +11,8 @@ class ProductController {
     return Product.findOrFail(pid);
   }
 
-  async store({ request }) {
+  async store({ request, response }) {
+    response.status(201);
     return Product.create(
       request.only(["title", "description", "price", "period", "is_private"])
     );
