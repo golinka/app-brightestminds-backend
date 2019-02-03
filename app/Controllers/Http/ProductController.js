@@ -14,7 +14,7 @@ class ProductController {
   async store({ request, response }) {
     response.status(201);
     return Product.create(
-      request.only(["title", "description", "price", "period", "is_private"])
+      request.only(["title", "description", "price", "interval", "is_private"])
     );
   }
 
@@ -24,7 +24,7 @@ class ProductController {
       "title",
       "description",
       "price",
-      "period",
+      "interval",
       "is_private"
     ]);
     return Product.update(pid, data);
@@ -35,6 +35,13 @@ class ProductController {
     const product = await Product.findOrFail(pid);
     await product.delete();
     return response.status(204).send();
+  }
+
+  async buy({ params, request, auth }) {
+    const { pid } = params;
+    const user = await auth.getUser();
+    const card = request.only(["number", "exp_month", "exp_year", "cvc"]);
+    return Product.buy(pid, card, user);
   }
 }
 

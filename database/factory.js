@@ -29,16 +29,7 @@ Factory.blueprint("App/Models/Product", (faker, index, data) => {
     title: data.title || faker.sentence({ words: 5 }),
     description: data.description || faker.paragraph({ sentences: 2 }),
     price: data.price || faker.integer({ min: 500, max: 3000 }),
-    period:
-      data.fname ||
-      faker.pick([
-        "Daily",
-        "Weekly",
-        "Monthly",
-        "Every 3 months",
-        "Every 6 months",
-        "Yearly"
-      ]),
+    interval: data.interval,
     is_private: data.is_private || faker.pick([true, false])
   };
 });

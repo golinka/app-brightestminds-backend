@@ -46,6 +46,12 @@ class User extends Boot {
       .pivotModel("App/Models/UserService")
       .withPivot(["token"]);
   }
+
+  subscriptions() {
+    return this.belongsToMany("App/Models/Product")
+      .pivotModel("App/Models/Subscription")
+      .withPivot(["status", "payment_date"]);
+  }
 }
 
 module.exports = User;
