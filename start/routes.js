@@ -22,6 +22,7 @@ Route.group(() => {
 
   Route.get("/products", "ProductController.index");
   Route.get("/products/:pid", "ProductController.show");
+  Route.get("/products/:pid/buy", "ProductController.buy").middleware("auth");
 }).prefix("api/v1");
 
 Route.group(() => {
