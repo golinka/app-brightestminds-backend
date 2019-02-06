@@ -3,6 +3,7 @@ const moment = use("moment");
 const stripe = require("stripe")(Env.getOrFail("STRIPE_SECRET_KEY"));
 
 const Product = use("App/Models/Product");
+const Subscription = use("App/Models/Subscription");
 
 class ProductRepository {
   static index(all) {
@@ -83,12 +84,15 @@ class ProductRepository {
       customer,
       items: [{ plan }]
     });
-    return user.subscriptions().sync([product.id], row => {
-      row.subs_id = subscription.id;
-      row.status = subscription.status;
-      row.payment_date = moment
+
+    return Subscription.create({
+      subs_id: subscription.id,
+      status: subscription.status,
+      payment_date: moment
         .unix(subscription.current_period_end)
-        .format("YYYY-MM-DD HH:mm:ssZ");
+        .format("YYYY-MM-DD HH:mm:ssZ"),
+      user_id: user.id,
+      product_id: pid
     });
   }
 }
