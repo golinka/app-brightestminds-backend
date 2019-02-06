@@ -7,6 +7,15 @@ class SubscriptionController {
       .with("product")
       .fetch();
   }
+
+  async show({ params }) {
+    const { sid } = params;
+    return Subscription.query()
+      .where("id", sid)
+      .with("user")
+      .with("product")
+      .fetch();
+  }
 }
 
 module.exports = SubscriptionController;

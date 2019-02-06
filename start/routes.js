@@ -43,6 +43,7 @@ Route.group(() => {
   Route.delete("/services/:sid", "ServiceController.delete");
 
   Route.get("/subscriptions", "SubscriptionController.index");
+  Route.get("/subscriptions/:sid", "SubscriptionController.show");
 })
   .prefix("api/v1")
   .middleware(["auth", "is:admin"]);
