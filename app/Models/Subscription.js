@@ -2,8 +2,8 @@
 const Model = use("Model");
 
 class Subscription extends Model {
-  subscriptions() {
-    return this.belongsToMany("App/Models/Product").withPivot(["product_id"]);
+  product() {
+    return this.belongsTo("App/Models/Product");
   }
 }
 

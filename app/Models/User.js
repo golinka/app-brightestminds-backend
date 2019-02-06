@@ -48,9 +48,7 @@ class User extends Boot {
   }
 
   subscriptions() {
-    return this.belongsToMany("App/Models/Product")
-      .pivotModel("App/Models/Subscription")
-      .withPivot(["status", "payment_date"]);
+    return this.hasMany("App/Models/Subscription");
   }
 }
 
