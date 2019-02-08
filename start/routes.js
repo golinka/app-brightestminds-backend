@@ -23,6 +23,15 @@ Route.group(() => {
   Route.get("/products", "ProductController.index");
   Route.get("/products/:pid", "ProductController.show");
   Route.get("/products/:pid/buy", "ProductController.buy").middleware("auth");
+
+  Route.post("/users", "UserController.store");
+  Route.get("/users/:uid", "UserController.show").middleware("canSee");
+  Route.post("/users/:uid", "UserController.update").middleware("canSee");
+  Route.delete("/users/:uid", "UserController.delete").middleware("canSee");
+
+  Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware(
+    "canSee"
+  );
 }).prefix("api/v1");
 
 Route.group(() => {
@@ -31,10 +40,6 @@ Route.group(() => {
   Route.delete("/products/:pid", "ProductController.delete");
 
   Route.get("/users", "UserController.index");
-  Route.post("/users", "UserController.store");
-  Route.get("/users/:uid", "UserController.show");
-  Route.post("/users/:uid", "UserController.update");
-  Route.delete("/users/:uid", "UserController.delete");
 
   Route.get("/services", "ServiceController.index");
   Route.post("/services", "ServiceController.store");
@@ -43,7 +48,6 @@ Route.group(() => {
   Route.delete("/services/:sid", "ServiceController.delete");
 
   Route.get("/subscriptions", "SubscriptionController.index");
-  Route.get("/subscriptions/:sid", "SubscriptionController.show");
 })
   .prefix("api/v1")
   .middleware(["auth", "is:admin"]);
