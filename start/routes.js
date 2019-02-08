@@ -22,7 +22,9 @@ Route.group(() => {
 
   Route.get("/products", "ProductController.index");
   Route.get("/products/:pid", "ProductController.show");
-  Route.get("/products/:pid/buy", "ProductController.buy").middleware("auth");
+  Route.get("/products/:pid/buy", "SubscriptionController.buy").middleware(
+    "auth"
+  );
 
   Route.post("/users", "UserController.store");
   Route.get("/users/:uid", "UserController.show").middleware("canSee");

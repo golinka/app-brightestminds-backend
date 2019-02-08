@@ -8,6 +8,13 @@ class SubscriptionController {
       .fetch();
   }
 
+  async buy({ params, request, auth }) {
+    const { pid } = params;
+    const user = await auth.getUser();
+    const card = request.only(["number", "exp_month", "exp_year", "cvc"]);
+    return Subscription.buy(pid, card, user);
+  }
+
   async show({ params }) {
     const { sid } = params;
     return Subscription.query()

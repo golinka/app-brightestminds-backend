@@ -36,13 +36,6 @@ class ProductController {
     await product.delete();
     return response.status(204).send();
   }
-
-  async buy({ params, request, auth }) {
-    const { pid } = params;
-    const user = await auth.getUser();
-    const card = request.only(["number", "exp_month", "exp_year", "cvc"]);
-    return Product.buy(pid, card, user);
-  }
 }
 
 module.exports = ProductController;
