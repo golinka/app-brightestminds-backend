@@ -30,6 +30,9 @@ Route.group(() => {
   Route.get("/users/:uid", "UserController.show").middleware("canSee");
   Route.post("/users/:uid", "UserController.update").middleware("canSee");
   Route.delete("/users/:uid", "UserController.delete").middleware("canSee");
+  Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware(
+    "canSee"
+  );
 
   Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware(
     "canSee"

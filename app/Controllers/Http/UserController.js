@@ -1,4 +1,5 @@
 const User = use("App/Models/User");
+const Subscription = use("App/Models/Subscription");
 
 class UserController {
   async index() {
@@ -44,6 +45,14 @@ class UserController {
     const user = await User.findOrFail(uid);
     await user.delete();
     return response.status(204).send();
+  }
+
+  async userSubs({ params }) {
+    const { uid } = params;
+    return Subscription.query()
+      .where("user_id", uid)
+      .with("product")
+      .fetch();
   }
 }
 
