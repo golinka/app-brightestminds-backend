@@ -19,7 +19,6 @@ Route.get("/", () => ({ status: "Ok", version: "1.0.0" }));
 
 Route.group(() => {
   Route.post("/login", "AuthController.login").middleware("guest");
-  Route.get("/logout", "AuthController.logout");
 
   Route.get("/products", "ProductController.index");
   Route.get("/products/:pid", "ProductController.show");
@@ -36,7 +35,7 @@ Route.group(() => {
   Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("canSee");
 
   Route.get("/subscriptions", "SubscriptionController.index").middleware(["auth", "is:admin"]);
-  Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware("canSee");
+  Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware(["auth", "is:admin"]);
 
   Route.get("/services", "ServiceController.index").middleware(["auth", "is:admin"]);
   Route.post("/services", "ServiceController.store").middleware(["auth", "is:admin"]);
