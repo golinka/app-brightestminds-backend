@@ -29,10 +29,10 @@ Route.group(() => {
 
   Route.get("/users", "UserController.index").middleware(["auth", "is:admin"]);
   Route.post("/users", "UserController.store");
-  Route.get("/users/:uid", "UserController.show").middleware("canSee");
-  Route.post("/users/:uid", "UserController.update").middleware("canSee");
-  Route.delete("/users/:uid", "UserController.delete").middleware("canSee");
-  Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("canSee");
+  Route.get("/users/:uid", "UserController.show").middleware("userAccess");
+  Route.post("/users/:uid", "UserController.update").middleware("userAccess");
+  Route.delete("/users/:uid", "UserController.delete").middleware("userAccess");
+  Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("userAccess");
 
   Route.get("/subscriptions", "SubscriptionController.index").middleware(["auth", "is:admin"]);
   Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware(["auth", "is:admin"]);

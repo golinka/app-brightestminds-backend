@@ -37,7 +37,7 @@ const namedMiddleware = {
   auth: "Adonis/Middleware/Auth",
   guest: "Adonis/Middleware/AllowGuestOnly",
   is: "Adonis/Acl/Is",
-  canSee: "App/Middleware/CanSee"
+  userAccess: "App/Middleware/UserAccess"
 };
 
 /*

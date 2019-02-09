@@ -2,7 +2,7 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-class MyAccount {
+class UserAccess {
   /**
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -25,4 +25,4 @@ class MyAccount {
   }
 }
 
-module.exports = MyAccount;
+module.exports = UserAccess;
