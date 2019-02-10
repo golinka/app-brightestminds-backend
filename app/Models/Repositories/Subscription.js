@@ -10,11 +10,6 @@ class SubscriptionRepository {
     const product = await Product.findOrFail(pid);
     const { id: token } = await stripe.tokens.create({ card });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Get or create customer
-    |--------------------------------------------------------------------------
-    */
     let { customer } = user;
     if (!customer) {
       const cus = await stripe.customers.create({
@@ -27,11 +22,6 @@ class SubscriptionRepository {
       await user.save();
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Сreate subscription
-    |--------------------------------------------------------------------------
-    */
     const subscription = await stripe.subscriptions.create({
       customer,
       items: [{ plan: product.plan }]
