@@ -12,10 +12,16 @@ class ProductController {
   }
 
   async store({ request, response }) {
+    const data = request.only([
+      "title",
+      "description",
+      "price",
+      "interval",
+      "is_private",
+      "currency"
+    ]);
     response.status(201);
-    return Product.create(
-      request.only(["title", "description", "price", "interval", "is_private"])
-    );
+    return Product.store(data);
   }
 
   async update({ request, params }) {
@@ -25,7 +31,8 @@ class ProductController {
       "description",
       "price",
       "interval",
-      "is_private"
+      "is_private",
+      "currency"
     ]);
     return Product.update(pid, data);
   }

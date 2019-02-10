@@ -29,45 +29,12 @@ class SubscriptionRepository {
 
     /*
     |--------------------------------------------------------------------------
-    | Get or create plan
-    |--------------------------------------------------------------------------
-    */
-    let { plan } = product;
-    if (!plan) {
-      let { product: productId } = product;
-      if (!productId) {
-        const { id: prodId } = await stripe.products.create({
-          name: product.title,
-          type: "service",
-          metadata: {
-            is_private: product.is_private
-          }
-        });
-        productId = prodId;
-        product.product = prodId;
-        await product.save();
-      }
-
-      const { id: planId } = await stripe.plans.create({
-        amount: `${product.price}00`,
-        interval: product.interval,
-        product: productId,
-        currency: product.currency
-      });
-
-      plan = planId;
-      product.plan = planId;
-      await product.save();
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Сreate subscription
     |--------------------------------------------------------------------------
     */
     const subscription = await stripe.subscriptions.create({
       customer,
-      items: [{ plan }]
+      items: [{ plan: product.plan }]
     });
 
     return Subscription.create({
