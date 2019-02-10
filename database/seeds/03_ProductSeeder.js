@@ -16,7 +16,17 @@ class ProductSeeder {
   async run() {
     await Product.query().delete();
 
-    await Factory.model("App/Models/Product").createMany(5);
+    const products = await Factory.model("App/Models/Product").makeMany(5);
+    const idsArray = await Promise.all(
+      products.map(product => Product.createProductPlan(product))
+    );
+
+    await Promise.all(
+      idsArray.map((ids, index) => {
+        products[index].merge({ product: ids.productId, plan: ids.planId });
+        return products[index].save();
+      })
+    );
   }
 }
 

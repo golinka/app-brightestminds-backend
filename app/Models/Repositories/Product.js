@@ -12,8 +12,8 @@ class ProductRepository {
           .fetch();
   }
 
-  static async store(data) {
-    const { id: stripeProductId } = await stripe.products.create({
+  static async createProductPlan(data) {
+    const { id: productId } = await stripe.products.create({
       name: data.title,
       type: "service",
       metadata: {
@@ -21,17 +21,22 @@ class ProductRepository {
       }
     });
 
-    const { id: stripePlanId } = await stripe.plans.create({
+    const { id: planId } = await stripe.plans.create({
       amount: `${data.price}00`,
       interval: data.interval,
-      product: stripeProductId,
+      product: productId,
       currency: data.currency
     });
 
+    return { productId, planId };
+  }
+
+  static async store(data) {
+    const { productId, planId } = this.createProductPlan(data);
     return Product.create({
       ...data,
-      product: stripeProductId,
-      plan: stripePlanId
+      product: productId,
+      plan: planId
     });
   }
 
