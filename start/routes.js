@@ -28,9 +28,9 @@ Route.group(() => {
   Route.delete("/products/:pid", "ProductController.delete").middleware(["auth", "is:admin"]);
 
   Route.get("/users", "UserController.index").middleware(["auth", "is:admin"]);
-  Route.post("/users", "UserController.store");
+  Route.post("/users", "UserController.store").validator('CheckUser');
   Route.get("/users/:uid", "UserController.show").middleware("userAccess");
-  Route.post("/users/:uid", "UserController.update").middleware("userAccess");
+  Route.post("/users/:uid", "UserController.update").middleware("userAccess").validator('CheckUser');
   Route.delete("/users/:uid", "UserController.delete").middleware("userAccess");
   Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("userAccess");
 
