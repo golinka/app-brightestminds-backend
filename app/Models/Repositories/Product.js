@@ -15,6 +15,7 @@ class ProductRepository {
   static async createProductPlan(data) {
     const { id: productId } = await stripe.products.create({
       name: data.title,
+      description: data.description,
       type: "service",
       metadata: {
         is_private: data.is_private
@@ -42,8 +43,28 @@ class ProductRepository {
 
   static async update(pid, data) {
     const product = await Product.findOrFail(pid);
-    await product.merge(data);
-    await product.save();
+
+    let prodResponse;
+    let planResponse;
+    try {
+      prodResponse = await stripe.products.del(product.product);
+      planResponse = await stripe.plans.del(product.plan);
+    } catch (err) {
+      throw new Error(
+        "This product cannot be updated because it has one or more plans"
+      );
+    }
+
+    if (prodResponse.deleted && planResponse.deleted) {
+      const { productId, planId } = this.createProductPlan(data);
+      product.merge(data);
+      product.merge({
+        product: productId,
+        plan: planId
+      });
+      await product.save();
+    }
+
     return product;
   }
 }
