@@ -11,11 +11,9 @@ class UserAccess {
   async handle({ params, auth }, next) {
     const { uid } = params;
     const user = await auth.getUser();
-
     const userRoles = await user.getRoles();
-    const isAdmin = userRoles.includes("admin");
 
-    if (Number(uid) !== user.id && !isAdmin) {
+    if (Number(uid) !== user.id && !userRoles.includes("admin")) {
       const error = new Error("You don't have access to this information");
       error.status = 403;
       throw error;

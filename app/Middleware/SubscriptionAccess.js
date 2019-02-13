@@ -15,10 +15,9 @@ class SubscriptionAccess {
     const user = await auth.getUser();
 
     const userRoles = await user.getRoles();
-    const isAdmin = userRoles.includes("admin");
     const { user_id: userId } = await Subscription.findOrFail(sid);
 
-    if (userId !== user.id && !isAdmin) {
+    if (userId !== user.id && !userRoles.includes("admin")) {
       const error = new Error("You don't have access to do this");
       error.status = 403;
       throw error;
