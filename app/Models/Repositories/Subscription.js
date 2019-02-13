@@ -37,6 +37,13 @@ class SubscriptionRepository {
       product_id: pid
     });
   }
+
+  static async cancel(sid) {
+    const subscription = await Subscription.findOrFail(sid);
+    await stripe.subscriptions.del(subscription.subs_id);
+    subscription.status = "cancel";
+    return subscription.save();
+  }
 }
 
 module.exports = SubscriptionRepository;

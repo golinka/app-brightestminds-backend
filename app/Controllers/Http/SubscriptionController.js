@@ -23,6 +23,12 @@ class SubscriptionController {
       .with("product")
       .fetch();
   }
+
+  async cancel({ params, response }) {
+    const { sid } = params;
+    await Subscription.cancel(sid);
+    return response.status(204).send();
+  }
 }
 
 module.exports = SubscriptionController;
