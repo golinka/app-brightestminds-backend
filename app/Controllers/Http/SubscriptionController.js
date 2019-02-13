@@ -35,6 +35,12 @@ class SubscriptionController {
     await Subscription.pause(sid);
     return response.status(204).send();
   }
+
+  async resume({ params, response }) {
+    const { sid } = params;
+    await Subscription.resume(sid);
+    return response.status(204).send();
+  }
 }
 
 module.exports = SubscriptionController;

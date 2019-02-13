@@ -4,6 +4,7 @@ const stripe = require("stripe")(Env.getOrFail("STRIPE_SECRET_KEY"));
 
 const Subscription = use("App/Models/Subscription");
 const Product = use("App/Models/Product");
+const User = use("App/Models/User");
 
 class SubscriptionRepository {
   static async buy(pid, card, user) {
@@ -51,6 +52,28 @@ class SubscriptionRepository {
 
   static pause(sid) {
     return this.changeStatusSubscription(sid, "paused");
+  }
+
+  static async resume(sid) {
+    const pausedSubscription = await Subscription.findOrFail(sid);
+    const { customer } = await User.findOrFail(pausedSubscription.user_id);
+    const product = await Product.findOrFail(pausedSubscription.product_id);
+
+    const subscription = await stripe.subscriptions.create({
+      customer,
+      items: [{ plan: product.plan }]
+    });
+
+    pausedSubscription.merge({
+      subs_id: subscription.id,
+      status: subscription.status,
+      payment_date: moment
+        .unix(subscription.current_period_end)
+        .format("YYYY-MM-DD HH:mm:ssZ")
+    });
+    await pausedSubscription.save();
+
+    return subscription;
   }
 }
 
