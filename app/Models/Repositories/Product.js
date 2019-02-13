@@ -1,6 +1,7 @@
 const Env = use("Env");
 const stripe = require("stripe")(Env.getOrFail("STRIPE_SECRET_KEY"));
 
+const StripeException = use("App/Exceptions/StripeException");
 const Product = use("App/Models/Product");
 
 class ProductRepository {
@@ -50,8 +51,9 @@ class ProductRepository {
       prodResponse = await stripe.products.del(product.product);
       planResponse = await stripe.plans.del(product.plan);
     } catch (err) {
-      throw new Error(
-        "This product cannot be updated because it has one or more plans"
+      throw new StripeException(
+        "This product cannot be updated because it has one or more plans",
+        400
       );
     }
 
