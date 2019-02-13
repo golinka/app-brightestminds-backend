@@ -36,7 +36,7 @@ Route.group(() => {
 
   Route.get("/subscriptions", "SubscriptionController.index").middleware(["auth", "is:admin"]);
   Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware(["auth", "is:admin"]);
-  Route.delete("/subscriptions/:sid", "SubscriptionController.cancel");
+  Route.delete("/subscriptions/:sid", "SubscriptionController.cancel").middleware("subsAccess");
 
   Route.get("/services", "ServiceController.index").middleware(["auth", "is:admin"]);
   Route.post("/services", "ServiceController.store").middleware(["auth", "is:admin"]);

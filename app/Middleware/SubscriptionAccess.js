@@ -1,22 +1,25 @@
+const Subscription = use("App/Models/Subscription");
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-class UserAccess {
+class SubscriptionAccess {
   /**
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Function} next
    */
   async handle({ params, auth }, next) {
-    const { uid } = params;
+    const { sid } = params;
     const user = await auth.getUser();
 
     const userRoles = await user.getRoles();
     const isAdmin = userRoles.includes("admin");
+    const { user_id: userId } = await Subscription.findOrFail(sid);
 
-    if (Number(uid) !== user.id && !isAdmin) {
-      const error = new Error("You don't have access to this information");
+    if (userId !== user.id && !isAdmin) {
+      const error = new Error("You don't have access to do this");
       error.status = 403;
       throw error;
     }
@@ -25,4 +28,4 @@ class UserAccess {
   }
 }
 
-module.exports = UserAccess;
+module.exports = SubscriptionAccess;
