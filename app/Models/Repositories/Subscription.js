@@ -38,11 +38,19 @@ class SubscriptionRepository {
     });
   }
 
-  static async cancel(sid) {
+  static async changeStatusSubscription(sid, status) {
     const subscription = await Subscription.findOrFail(sid);
     await stripe.subscriptions.del(subscription.subs_id);
-    subscription.status = "cancel";
+    subscription.status = status;
     return subscription.save();
+  }
+
+  static cancel(sid) {
+    return this.changeStatusSubscription(sid, "canceled");
+  }
+
+  static pause(sid) {
+    return this.changeStatusSubscription(sid, "paused");
   }
 }
 
