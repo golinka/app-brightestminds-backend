@@ -16,7 +16,6 @@ class ProductRepository {
   static async createProductPlan(data) {
     const { id: productId } = await stripe.products.create({
       name: data.title,
-      description: data.description,
       type: "service",
       metadata: {
         is_private: data.is_private
