@@ -41,6 +41,12 @@ class SubscriptionController {
     await Subscription.resume(sid);
     return response.status(204).send();
   }
+
+  async update({ params, request }) {
+    const { sid } = params;
+    const data = request.only(["item", "anchor", "prorate"]);
+    return Subscription.update(sid, data);
+  }
 }
 
 module.exports = SubscriptionController;

@@ -75,6 +75,25 @@ class SubscriptionRepository {
 
     return subscription;
   }
+
+  static async update(sid, data) {
+    const { item, anchor, prorate } = data;
+    const subscription = await Subscription.findOrFail(sid);
+    const { plan } = await Product.query()
+      .where("id", Number(item))
+      .firstOrFail();
+
+    await stripe.subscriptions.update(subscription.subs_id, {
+      items: [{ plan }],
+      billing_cycle_anchor: anchor,
+      prorate
+    });
+
+    subscription.product_id = item;
+    await subscription.save();
+
+    return subscription;
+  }
 }
 
 module.exports = SubscriptionRepository;
