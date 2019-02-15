@@ -1,3 +1,6 @@
+const Env = use("Env");
+const stripe = require("stripe")(Env.getOrFail("STRIPE_SECRET_KEY"));
+
 const User = use("App/Models/User");
 
 class UserRepository {
@@ -22,6 +25,11 @@ class UserRepository {
     });
 
     return this.show(uid);
+  }
+
+  static async removeCustomer(customer) {
+    const { deleted } = await stripe.customers.del(customer);
+    return deleted;
   }
 }
 

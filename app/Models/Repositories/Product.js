@@ -68,6 +68,12 @@ class ProductRepository {
 
     return product;
   }
+
+  static async removeProductPlan(product, plan) {
+    const { productDeleted } = await stripe.plans.del(plan);
+    const { planDeleted } = await stripe.products.del(product);
+    return productDeleted && planDeleted;
+  }
 }
 
 module.exports = ProductRepository;
