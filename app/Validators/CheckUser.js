@@ -1,8 +1,26 @@
+const Validator = use("Validator");
+
+const usernameFn = async (data, field, message) => {
+  const { username, auth, uid } = data;
+  const user = await auth.getUser();
+  if (Number(uid) !== Number(user.id) && username === user.username)
+    throw message;
+};
+
+const useremailFn = async (data, field, message) => {
+  const { email, auth, uid } = data;
+  const user = await auth.getUser();
+  if (Number(uid) !== Number(user.id) && email === user.email) throw message;
+};
+
+Validator.extend("username", usernameFn);
+Validator.extend("useremail", useremailFn);
+
 class CheckUser {
   get rules() {
     return {
-      username: "required|min:4|max:80|unique:users",
-      email: "required|email|max:255|unique:users",
+      username: "required|min:4|max:80|username",
+      email: "required|email|max:255|useremail",
       password: "required|min:4|max:12",
       fname: "required|min:2|max:35",
       lname: "min:2|max:45",
@@ -14,8 +32,9 @@ class CheckUser {
   get messages() {
     return {
       required: "{{ field }} is required",
-      unique: "{{ field }} value already use",
       email: "{{ field }} is in wrong format",
+      "username.username": "{{ field }} value already use",
+      "email.useremail": "{{ field }} value already use",
       "username.min": "{{ field }} must be at least 4 characters",
       "username.max": "{{ field }} must be at maximum 80 characters",
       "email.max": "{{ field }} must be at maximum 255 characters",
@@ -28,6 +47,12 @@ class CheckUser {
       "phone.max": "{{ field }} must be at maximum 25 characters",
       "company.max": "{{ field }} must be at maximum 150 characters"
     };
+  }
+
+  get data() {
+    const body = this.ctx.request.all();
+    const { uid } = this.ctx.params;
+    return Object.assign({}, body, { auth: this.ctx.auth, uid });
   }
 }
 
