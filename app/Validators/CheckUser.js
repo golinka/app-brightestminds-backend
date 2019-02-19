@@ -1,22 +1,23 @@
 const Validator = use("Validator");
 const User = use("App/Models/User");
 
-const usernameFn = async (data, field, message) => {
-  const { username, auth } = data;
+const checkFn = async (auth, field, value) => {
   const user = await auth.getUser();
   const { rows: users } = await User.all();
-  const isUnique = users.reduce((accum, man) => man.username !== username);
+  const isNotUnique = users.map(man => man[field] === value).includes(true);
+  return user[field] !== value && isNotUnique;
+};
 
-  if (user.username !== username && !isUnique) throw message;
+const usernameFn = async (data, field, message) => {
+  const { username, auth } = data;
+  const fails = await checkFn(auth, "username", username);
+  if (fails) throw message;
 };
 
 const useremailFn = async (data, field, message) => {
   const { email, auth } = data;
-  const user = await auth.getUser();
-  const { rows: users } = await User.all();
-  const isUnique = users.reduce((accum, man) => man.email !== email);
-
-  if (email !== user.email && !isUnique) throw message;
+  const fails = await checkFn(auth, "email", email);
+  if (fails) throw message;
 };
 
 Validator.extend("username", usernameFn);
