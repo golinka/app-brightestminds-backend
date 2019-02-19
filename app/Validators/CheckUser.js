@@ -1,16 +1,22 @@
 const Validator = use("Validator");
+const User = use("App/Models/User");
 
 const usernameFn = async (data, field, message) => {
-  const { username, auth, uid } = data;
+  const { username, auth } = data;
   const user = await auth.getUser();
-  if (Number(uid) !== Number(user.id) && username === user.username)
-    throw message;
+  const { rows: users } = await User.all();
+  const isUnique = users.reduce((accum, man) => man.username !== username);
+
+  if (user.username !== username && !isUnique) throw message;
 };
 
 const useremailFn = async (data, field, message) => {
-  const { email, auth, uid } = data;
+  const { email, auth } = data;
   const user = await auth.getUser();
-  if (Number(uid) !== Number(user.id) && email === user.email) throw message;
+  const { rows: users } = await User.all();
+  const isUnique = users.reduce((accum, man) => man.email !== email);
+
+  if (email === user.email && !isUnique) throw message;
 };
 
 Validator.extend("username", usernameFn);
@@ -47,12 +53,6 @@ class CheckUser {
       "phone.max": "{{ field }} must be at maximum 25 characters",
       "company.max": "{{ field }} must be at maximum 150 characters"
     };
-  }
-
-  get data() {
-    const body = this.ctx.request.all();
-    const { uid } = this.ctx.params;
-    return Object.assign({}, body, { auth: this.ctx.auth, uid });
   }
 }
 
