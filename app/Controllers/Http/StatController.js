@@ -1,10 +1,10 @@
 const Service = use("App/Models/Service");
 
 class StatController {
-  async dashboard({ auth }) {
+  async campaigns({ auth }) {
     const user = await auth.getUser();
-    const { rows: [woodpeckerService] } = await user.services().where("slug", "woodpecker").fetch(); // eslint-disable-line
-    const { token } = woodpeckerService.toJSON().pivot;
+    const { rows: [woodpecker] } = await user.services().where("slug", "woodpecker").fetch(); // eslint-disable-line
+    const { token } = woodpecker.toJSON().pivot;
     return Service.getCampaigns(token);
   }
 }
