@@ -33,6 +33,15 @@ class ServiceRepository {
     const [campaign] = await Woodpecker.campaigns().find({ id: cid });
     return campaign;
   }
+
+  static async getProspects(cid, token) {
+    const Woodpecker = WoodpeckerAPI(token);
+    const prospects = await Woodpecker.prospects().find({
+      campaign: cid,
+      $limit: 500
+    });
+    return prospects;
+  }
 }
 
 module.exports = ServiceRepository;
