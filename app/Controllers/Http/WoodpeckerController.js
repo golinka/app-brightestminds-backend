@@ -1,6 +1,6 @@
 const Service = use("App/Models/Service");
 
-class StatController {
+class WoodpeckerController {
   async campaigns({ auth }) {
     const user = await auth.getUser();
     const { rows: [woodpecker] } = await user.services().where("slug", "woodpecker").fetch(); // eslint-disable-line
@@ -25,4 +25,4 @@ class StatController {
   }
 }
 
-module.exports = StatController;
+module.exports = WoodpeckerController;

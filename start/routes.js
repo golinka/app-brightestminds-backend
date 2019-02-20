@@ -34,9 +34,9 @@ Route.group(() => {
   Route.delete("/users/:uid", "UserController.delete").middleware("userAccess");
   Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("userAccess");
 
-  Route.get("/users/:uid/campaigns", "StatController.campaigns").middleware("userAccess");
-  Route.get("/users/:uid/campaigns/:cid", "StatController.campaign").middleware("userAccess");
-  Route.get("/users/:uid/campaigns/:cid/prospects", "StatController.prospects").middleware("userAccess");
+  Route.get("/users/:uid/campaigns", "WoodpeckerController.campaigns").middleware("userAccess");
+  Route.get("/users/:uid/campaigns/:cid", "WoodpeckerController.campaign").middleware("userAccess");
+  Route.get("/users/:uid/campaigns/:cid/prospects", "WoodpeckerController.prospects").middleware("userAccess");
 
   Route.get("/subscriptions", "SubscriptionController.index").middleware(["auth", "is:admin"]);
   Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware("subsAccess");
