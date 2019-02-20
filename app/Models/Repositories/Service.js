@@ -62,6 +62,16 @@ class ServiceRepository {
     });
     return prospects;
   }
+
+  static async getAutoreplied(cid, token) {
+    const Woodpecker = WoodpeckerAPI(token);
+    const prospects = await Woodpecker.prospects().find({
+      status: "AUTOREPLIED",
+      campaign: cid,
+      $limit: 500
+    });
+    return prospects;
+  }
 }
 
 module.exports = ServiceRepository;

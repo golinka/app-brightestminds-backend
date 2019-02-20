@@ -40,6 +40,13 @@ class WoodpeckerController {
     const token = await this.getServiceToken(user);
     return Service.getReplied(cid, token);
   }
+
+  async autoreplied({ params, auth }) {
+    const { cid } = params;
+    const user = await auth.getUser();
+    const token = await this.getServiceToken(user);
+    return Service.getAutoreplied(cid, token);
+  }
 }
 
 module.exports = WoodpeckerController;
