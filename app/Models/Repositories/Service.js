@@ -42,6 +42,16 @@ class ServiceRepository {
     });
     return prospects;
   }
+
+  static async getOpened(cid, token) {
+    const Woodpecker = WoodpeckerAPI(token);
+    const prospects = await Woodpecker.prospects().find({
+      activity: Woodpecker.activity.OPENED,
+      campaign: cid,
+      $limit: 500
+    });
+    return prospects;
+  }
 }
 
 module.exports = ServiceRepository;
