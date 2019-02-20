@@ -27,6 +27,12 @@ class ServiceRepository {
 
     return stats;
   }
+
+  static async getCampaign(cid, token) {
+    const Woodpecker = WoodpeckerAPI(token);
+    const [campaign] = await Woodpecker.campaigns().find({ id: cid });
+    return campaign;
+  }
 }
 
 module.exports = ServiceRepository;

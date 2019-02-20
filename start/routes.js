@@ -35,6 +35,7 @@ Route.group(() => {
   Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("userAccess");
 
   Route.get("/users/:uid/campaigns", "StatController.campaigns").middleware("userAccess");
+  Route.get("/users/:uid/campaigns/:cid", "StatController.campaign").middleware("userAccess");
 
   Route.get("/subscriptions", "SubscriptionController.index").middleware(["auth", "is:admin"]);
   Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware("subsAccess");
