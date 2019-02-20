@@ -38,6 +38,7 @@ Route.group(() => {
   Route.get("/users/:uid/campaigns/:cid", "WoodpeckerController.campaign").middleware("userAccess");
   Route.get("/users/:uid/campaigns/:cid/prospects", "WoodpeckerController.prospects").middleware("userAccess");
   Route.get("/users/:uid/campaigns/:cid/opened", "WoodpeckerController.opened").middleware("userAccess");
+  Route.get("/users/:uid/campaigns/:cid/replied", "WoodpeckerController.replied").middleware("userAccess");
 
   Route.get("/subscriptions", "SubscriptionController.index").middleware(["auth", "is:admin"]);
   Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware("subsAccess");
