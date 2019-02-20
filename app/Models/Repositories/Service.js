@@ -10,10 +10,22 @@ class ServiceRepository {
     return service;
   }
 
-  static async getCampaignsStat(token) {
+  static async getCampaigns(token) {
     const Woodpecker = WoodpeckerAPI(token);
-    const response = await Woodpecker.campaigns().find();
-    return response;
+    const campaigns = await Woodpecker.campaigns().find();
+    const ids = campaigns.map(campaign => campaign.id);
+
+    const statsArrays = await Promise.all(
+      ids.map(id => Woodpecker.campaigns().find({ id }))
+    );
+
+    const stats = statsArrays.map(array => {
+      const campaign = array.pop();
+      delete campaign.stats.emails;
+      return campaign;
+    });
+
+    return stats;
   }
 }
 

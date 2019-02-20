@@ -5,7 +5,7 @@ class StatController {
     const user = await auth.getUser();
     const { rows: [woodpeckerService] } = await user.services().where("slug", "woodpecker").fetch(); // eslint-disable-line
     const { token } = woodpeckerService.toJSON().pivot;
-    return Service.getCampaignsStat(token);
+    return Service.getCampaigns(token);
   }
 }
 
