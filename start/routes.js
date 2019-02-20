@@ -34,6 +34,8 @@ Route.group(() => {
   Route.delete("/users/:uid", "UserController.delete").middleware("userAccess");
   Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("userAccess");
 
+  Route.get("/dashboard", "StatController.dashboard").middleware("userAccess");
+
   Route.get("/subscriptions", "SubscriptionController.index").middleware(["auth", "is:admin"]);
   Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware("subsAccess");
   Route.post("/subscriptions/:sid", "SubscriptionController.update").middleware(["auth", "is:admin"]).validator("CheckSubs");

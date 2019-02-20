@@ -36,7 +36,8 @@
     "chance": "^1.0.18",
     "moment": "^2.24.0",
     "pg": "7.4.3",
-    "stripe": "^6.23.1"
+    "stripe": "^6.23.1",
+    "woodpecker-api": "^1.1.0"
   },
   "devDependencies": {
     "eslint": "^5.12.1",

@@ -1,3 +1,5 @@
+const WoodpeckerAPI = require("woodpecker-api");
+
 const Service = use("App/Models/Service");
 
 class ServiceRepository {
@@ -6,6 +8,12 @@ class ServiceRepository {
     service.merge(data);
     await service.save();
     return service;
+  }
+
+  static async getCampaignsStat(token) {
+    const Woodpecker = WoodpeckerAPI(token);
+    const response = await Woodpecker.campaigns().find();
+    return response;
   }
 }
 
