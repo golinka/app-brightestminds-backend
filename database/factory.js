@@ -25,9 +25,12 @@ Factory.blueprint("App/Models/User", (faker, index, data) => {
 });
 
 Factory.blueprint("App/Models/Product", (faker, index, data) => {
+  const description = [];
+  for (let i = 0; i < 10; i += 1)
+    description.push(faker.sentence({ words: 5 }));
   return {
     title: data.title || faker.sentence({ words: 5 }),
-    description: data.description || faker.paragraph({ sentences: 2 }),
+    description: data.description || description.join("\n"),
     price: data.price || faker.integer({ min: 500, max: 3000 }),
     interval: data.interval || "week",
     currency: data.currency || "eur",
