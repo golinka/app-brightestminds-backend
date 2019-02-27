@@ -33,7 +33,7 @@ class ProductRepository {
   }
 
   static async store(data) {
-    const { productId, planId } = this.createProductPlan(data);
+    const { productId, planId } = await this.createProductPlan(data);
     return Product.create({
       ...data,
       product: productId,
@@ -57,7 +57,7 @@ class ProductRepository {
     }
 
     if (prodResponse.deleted && planResponse.deleted) {
-      const { productId, planId } = this.createProductPlan(data);
+      const { productId, planId } = await this.createProductPlan(data);
       product.merge(data);
       product.merge({
         product: productId,
