@@ -21,7 +21,7 @@ Route.group(() => {
   Route.post("/login", "AuthController.login").middleware("guest");
 
   Route.get("/products", "ProductController.index");
-  Route.get("/products/:pid", "ProductController.show");
+  Route.get("/products/:slug", "ProductController.show");
   Route.post("/products/:pid/buy", "SubscriptionController.buy").middleware("auth").validator("CheckCard");
   Route.post("/products", "ProductController.store").middleware(["auth", "is:admin"]).validator("CheckProduct");
   Route.post("/products/:pid", "ProductController.update").middleware(["auth", "is:admin"]).validator("CheckProduct");

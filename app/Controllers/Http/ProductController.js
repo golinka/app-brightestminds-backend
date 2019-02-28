@@ -7,8 +7,8 @@ class ProductController {
   }
 
   async show({ params }) {
-    const { pid } = params;
-    return Product.findOrFail(pid);
+    const { slug } = params;
+    return Product.findByOrFail({ slug });
   }
 
   async store({ request, response }) {
