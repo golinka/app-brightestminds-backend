@@ -25,8 +25,10 @@ class UserController {
     return User.show(uid);
   }
 
-  showMe({ auth }) {
-    return auth.getUser();
+  async showMe({ auth }) {
+    const user = await auth.getUser();
+    const [role] = await user.getRoles();
+    return { ...user.toJSON(), role };
   }
 
   async update({ params, request }) {
