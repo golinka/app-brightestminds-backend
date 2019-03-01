@@ -25,6 +25,10 @@ class UserController {
     return User.show(uid);
   }
 
+  showMe({ auth }) {
+    return auth.getUser();
+  }
+
   async update({ params, request }) {
     const { uid } = params;
     const data = request.only([
