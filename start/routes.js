@@ -19,6 +19,7 @@ Route.get("/", () => ({ status: "Ok", version: "1.0.0" }));
 
 Route.group(() => {
   Route.post("/login", "AuthController.login").middleware("guest");
+  Route.post("/refresh", "AuthController.refresh").middleware("guest");
 
   Route.get("/products", "ProductController.index");
   Route.get("/products/:slug", "ProductController.show");
