@@ -19,6 +19,10 @@ class ExceptionHandler extends BaseExceptionHandler {
    * @return {void}
    */
   async handle(error, { response }) {
+    if (error.message.indexOf("_") && error.message.indexOf(": ")) {
+      [, error.message] = error.message.split(": ");
+    }
+
     switch (error.name) {
       case "ValidationException": {
         const [message] = error.messages;
