@@ -36,12 +36,12 @@ Route.group(() => {
   Route.delete("/users/:uid", "UserController.delete").middleware("userAccess");
   Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("userAccess");
 
-  Route.get("/users/:uid/campaigns", "WoodpeckerController.campaigns").middleware("userAccess");
-  Route.get("/users/:uid/campaigns/:cid", "WoodpeckerController.campaign").middleware("userAccess");
-  Route.get("/users/:uid/campaigns/:cid/prospects", "WoodpeckerController.prospects").middleware("userAccess");
-  Route.get("/users/:uid/campaigns/:cid/opened", "WoodpeckerController.opened").middleware("userAccess");
-  Route.get("/users/:uid/campaigns/:cid/replied", "WoodpeckerController.replied").middleware("userAccess");
-  Route.get("/users/:uid/campaigns/:cid/autoreplied", "WoodpeckerController.autoreplied").middleware("userAccess");
+  Route.get("/campaigns", "WoodpeckerController.campaigns").middleware("userAccess");
+  Route.get("/campaigns/:cid", "WoodpeckerController.campaign").middleware("userAccess");
+  Route.get("/campaigns/:cid/prospects", "WoodpeckerController.prospects").middleware("userAccess");
+  Route.get("/campaigns/:cid/opened", "WoodpeckerController.opened").middleware("userAccess");
+  Route.get("/campaigns/:cid/replied", "WoodpeckerController.replied").middleware("userAccess");
+  Route.get("/campaigns/:cid/autoreplied", "WoodpeckerController.autoreplied").middleware("userAccess");
 
   Route.get("/subscriptions", "SubscriptionController.index").middleware(["auth", "is:admin"]);
   Route.get("/subscriptions/:sid", "SubscriptionController.show").middleware("subsAccess");
