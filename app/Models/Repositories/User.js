@@ -4,6 +4,16 @@ const stripe = require("stripe")(Env.getOrFail("STRIPE_SECRET_KEY"));
 const User = use("App/Models/User");
 
 class UserRepository {
+  static async withDetails(username, response) {
+    if (typeof response === "object") {
+      const user = await User.findByOrFail({ username });
+      const [role] = await user.getRoles();
+      Object.assign(user, { role });
+      Object.assign(response, { user });
+    }
+    return response;
+  }
+
   static async show(uid) {
     return User.query()
       .where("id", uid)
