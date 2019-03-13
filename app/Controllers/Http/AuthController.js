@@ -6,7 +6,8 @@ class AuthController {
     const response = await auth.withRefreshToken().attempt(username, password);
     if (typeof response === "object") {
       const user = await User.findByOrFail({ username });
-      Object.assign(response, { user });
+      const [role] = await user.getRoles();
+      Object.assign(response, { user: { ...user, role } });
     }
     return response;
   }
