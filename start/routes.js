@@ -23,7 +23,7 @@ Route.group(() => {
 
   Route.get("/products", "ProductController.index");
   Route.get("/products/:slug", "ProductController.show");
-  Route.post("/products/:pid/buy", "SubscriptionController.buy").middleware("auth").validator("CheckCard");
+  Route.post("/products/:pid/buy", "ProductController.buy").middleware("auth").validator("CheckCard");
   Route.post("/products", "ProductController.store").middleware(["auth", "is:admin"]).validator("CheckProduct");
   Route.post("/products/:pid", "ProductController.update").middleware(["auth", "is:admin"]).validator("CheckProduct");
   Route.delete("/products/:pid", "ProductController.delete").middleware(["auth", "is:admin"]);

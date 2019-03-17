@@ -11,6 +11,13 @@ class ProductController {
     return Product.findByOrFail({ slug });
   }
 
+  async buy({ params, request, auth }) {
+    const { pid } = params;
+    const user = await auth.getUser();
+    const card = request.only(["number", "exp_month", "exp_year", "cvc"]);
+    return Product.buy(pid, card, user);
+  }
+
   async store({ request, response }) {
     const data = request.only([
       "title",
