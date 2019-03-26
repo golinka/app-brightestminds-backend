@@ -8,7 +8,8 @@ class UserRepository {
     if (typeof response === "object") {
       const user = await User.findByOrFail({ username });
       const [role] = await user.getRoles();
-      Object.assign(user, { role });
+      const { rows: services } = await user.services().fetch();
+      Object.assign(user, { role, services });
       Object.assign(response, { user });
     }
     return response;
