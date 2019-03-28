@@ -29,7 +29,7 @@ Route.group(() => {
   Route.delete("/products/:pid", "ProductController.delete").middleware(["auth", "is:admin"]);
 
   Route.get("/users", "UserController.index").middleware(["auth", "is:admin"]);
-  Route.post("/users", "UserController.store").validator("CheckUser");
+  Route.post("/users", "UserController.store").validator("CheckNewUser");
   Route.get("/users/:uid", "UserController.show").middleware("userAccess");
   Route.get("/user", "UserController.showMe").middleware("auth");
   Route.post("/users/:uid", "UserController.update").middleware("userAccess").validator("CheckUser");

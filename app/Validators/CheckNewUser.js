@@ -1,33 +1,9 @@
-const Validator = use("Validator");
-const User = use("App/Models/user");
-
-const validateUnique = async (user, { name, value }, message) => {
-  const fails =
-    user[name] !== value ? !!(await User.findBy({ name: value })) : false;
-  if (fails) throw new Error(message);
-};
-
-const uniqueUsername = async (data, field, message) => {
-  const { username, auth } = data;
-  const user = await auth.getUser();
-  validateUnique(user, { name: "username", value: username }, message);
-};
-
-const uniqueEmail = async (data, field, message) => {
-  const { email, auth } = data;
-  const user = await auth.getUser();
-  validateUnique(user, { name: "email", value: email }, message);
-};
-
-Validator.extend("username", uniqueUsername);
-Validator.extend("uniqueEmail", uniqueEmail);
-
-class CheckUser {
+class CheckNewUser {
   get rules() {
     return {
-      username: "required|min:4|max:80|username",
-      email: "required|email|max:255|uniqueEmail",
-      password: "min:4|max:12",
+      username: "required|min:4|max:80|unique:users",
+      email: "required|email|max:255|unique:users",
+      password: "required|min:4|max:12",
       fname: "required|min:2|max:35",
       lname: "min:2|max:45",
       phone: "max:25",
@@ -54,11 +30,6 @@ class CheckUser {
       "company.max": "{{ field }} must be at maximum 150 characters"
     };
   }
-
-  get data() {
-    const body = this.ctx.request.all();
-    return Object.assign({}, body, { auth: this.ctx.auth });
-  }
 }
 
-module.exports = CheckUser;
+module.exports = CheckNewUser;
