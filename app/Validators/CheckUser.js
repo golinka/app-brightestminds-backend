@@ -39,8 +39,8 @@ class CheckUser {
     return {
       required: "{{ field }} is required",
       email: "{{ field }} is in wrong format",
-      "username.unique": "{{ field }} value already use",
-      "email.unique": "{{ field }} value already use",
+      "username.username": "{{ field }} value already use",
+      "email.uniqueEmail": "{{ field }} value already use",
       "username.min": "{{ field }} must be at least 4 characters",
       "username.max": "{{ field }} must be at maximum 80 characters",
       "email.max": "{{ field }} must be at maximum 255 characters",
