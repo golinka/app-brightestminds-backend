@@ -8,7 +8,7 @@ class AuthController {
   }
 
   async refresh({ request, auth }) {
-    const refreshToken = request.input("refreshToken");
+    const { refreshToken } = request.all();
     const response = await auth
       .newRefreshToken()
       .generateForRefreshToken(refreshToken);

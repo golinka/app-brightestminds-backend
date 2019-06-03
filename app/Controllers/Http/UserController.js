@@ -28,8 +28,7 @@ class UserController {
   async showMe({ auth }) {
     const user = await auth.getUser();
     const [role] = await user.getRoles();
-    const { rows: services } = await user.services().fetch();
-    return { ...user.toJSON(), role, services };
+    return { ...user.toJSON(), role };
   }
 
   async update({ params, request }) {
@@ -60,6 +59,12 @@ class UserController {
       .where("user_id", uid)
       .with("product")
       .fetch();
+  }
+
+  async updateServices({ params, request }) {
+    const { uid } = params;
+    const { services } = request.only("services");
+    return User.updateServices(uid, services);
   }
 }
 
