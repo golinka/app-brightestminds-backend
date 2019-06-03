@@ -2,21 +2,26 @@ const Validator = use("Validator");
 const User = use("App/Models/user");
 
 const validateUnique = async (user, { name, value }, message) => {
+  const { rows: users } = await User.all();
   const fails =
-    user[name] !== value ? !!(await User.findBy({ name: value })) : false;
-  if (fails) throw new Error(message);
+    user[name] !== value
+      ? !!users.filter(someUser => someUser[name] === value).length
+      : false;
+  if (fails) {
+    throw new Error(message);
+  }
 };
 
 const uniqueUsername = async (data, field, message) => {
   const { username, auth } = data;
   const user = await auth.getUser();
-  validateUnique(user, { name: "username", value: username }, message);
+  await validateUnique(user, { name: "username", value: username }, message);
 };
 
 const uniqueEmail = async (data, field, message) => {
   const { email, auth } = data;
   const user = await auth.getUser();
-  validateUnique(user, { name: "email", value: email }, message);
+  await validateUnique(user, { name: "email", value: email }, message);
 };
 
 Validator.extend("username", uniqueUsername);
@@ -58,6 +63,10 @@ class CheckUser {
   get data() {
     const body = this.ctx.request.all();
     return Object.assign({}, body, { auth: this.ctx.auth });
+  }
+
+  get validateAll() {
+    return true;
   }
 }
 
