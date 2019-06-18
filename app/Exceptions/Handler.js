@@ -19,19 +19,10 @@ class ExceptionHandler extends BaseExceptionHandler {
    * @return {void}
    */
   async handle(error, { response }) {
-    if (error.message.indexOf("_") && error.message.indexOf(": ")) {
-      [, error.message] = error.message.split(": ");
-    }
-
     switch (error.name) {
       case "ValidationException": {
-        const [message] = error.messages;
         response.status(error.status).json({
-          error: {
-            code: error.status,
-            name: error.name,
-            ...message
-          }
+          error
         });
         break;
       }
@@ -47,8 +38,8 @@ class ExceptionHandler extends BaseExceptionHandler {
       default: {
         response.status(error.status).json({
           error: {
-            message: error.message,
-            code: error.status
+            message: error.message || "Something went wrong",
+            code: error.status || 500
           }
         });
         break;
