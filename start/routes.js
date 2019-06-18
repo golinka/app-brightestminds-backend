@@ -33,6 +33,7 @@ Route.group(() => {
   Route.get("/users/:uid", "UserController.show").middleware("userAccess");
   Route.get("/user", "UserController.showMe").middleware("auth");
   Route.post("/users/:uid", "UserController.update").middleware("userAccess").validator("CheckUser");
+  Route.post("/users/:uid/services", "UserController.updateServices").middleware("userAccess");
   Route.delete("/users/:uid", "UserController.delete").middleware("userAccess");
   Route.get("/users/:uid/subscriptions", "UserController.userSubs").middleware("userAccess");
 

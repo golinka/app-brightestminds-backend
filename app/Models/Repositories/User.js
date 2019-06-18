@@ -22,19 +22,20 @@ class UserRepository {
       .fetch();
   }
 
-  static async update(uid, data, services) {
+  static async update(uid, data) {
     const user = await User.findOrFail(uid);
     user.merge(data);
     await user.save();
+    return this.show(uid);
+  }
 
-    const ids = Object.keys(services).filter(
-      id => typeof services[id] !== "undefined"
-    );
-
+  static async updateServices(uid, services) {
+    const user = await User.findOrFail(uid);
+    const serviceData = JSON.parse(services);
+    const ids = serviceData.map(service => service.id);
     await user.services().sync(ids, row => {
-      row.token = services[row.service_id];
+      row.token = serviceData[row.service_id].token;
     });
-
     return this.show(uid);
   }
 
