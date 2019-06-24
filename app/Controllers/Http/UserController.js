@@ -42,8 +42,7 @@ class UserController {
       "phone",
       "company"
     ]);
-    const { services } = request.only("services");
-    return User.update(uid, data, services);
+    return User.update(uid, data);
   }
 
   async delete({ params, response }) {
@@ -61,10 +60,10 @@ class UserController {
       .fetch();
   }
 
-  async updateServices({ params, request }) {
-    const { uid } = params;
-    const { services } = request.only("services");
-    return User.updateServices(uid, services);
+  async updateService({ params, request }) {
+    const { uid, sid } = params;
+    const { token } = request.only("token");
+    return User.updateService(uid, sid, token);
   }
 }
 

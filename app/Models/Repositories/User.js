@@ -2,6 +2,7 @@ const Env = use("Env");
 const stripe = require("stripe")(Env.getOrFail("STRIPE_SECRET_KEY"));
 
 const User = use("App/Models/User");
+const UserService = use("App/Models/UserService");
 
 class UserRepository {
   static async withDetails(username, response) {
@@ -29,14 +30,14 @@ class UserRepository {
     return this.show(uid);
   }
 
-  static async updateServices(uid, services) {
-    const user = await User.findOrFail(uid);
-    const serviceData = JSON.parse(services);
-    const ids = serviceData.map(service => service.id);
-    await user.services().sync(ids, row => {
-      row.token = serviceData[row.service_id].token;
+  static async updateService(uid, sid, token) {
+    const service = await UserService.findByOrFail({
+      user_id: uid,
+      service_id: sid
     });
-    return this.show(uid);
+    service.token = token;
+    await service.save();
+    return service;
   }
 
   static async removeCustomer(customer) {
