@@ -16,8 +16,8 @@ class ServiceSeeder {
   async run() {
     await Subscription.query().delete();
 
-    const admin = await User.findBy("username", "admin");
-    const subs = await User.findBy("username", "subs");
+    const admin = await User.findByOrFail("username", "admin");
+    const subs = await User.findByOrFail("username", "subs");
 
     const card = {
       number: "4242424242424242",

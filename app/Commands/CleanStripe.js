@@ -18,7 +18,7 @@ class CleanStripe extends Command {
     const username = await this.ask("Enter your username:");
     const password = await this.secure("Password:");
 
-    const user = await User.findBy({ username });
+    const user = await User.findByOrFail({ username });
     const checkPassword = await Hash.verify(password, user.password);
 
     if (user.username === username && checkPassword) {

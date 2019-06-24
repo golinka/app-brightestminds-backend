@@ -17,8 +17,8 @@ class UserSeeder {
   async run() {
     await User.query().delete();
 
-    const adminRole = await Role.findBy("slug", "admin");
-    const subsRole = await Role.findBy("slug", "subs");
+    const adminRole = await Role.findByOrFail("slug", "admin");
+    const subsRole = await Role.findByOrFail("slug", "subs");
 
     const admin = await User.create({
       username: "admin",

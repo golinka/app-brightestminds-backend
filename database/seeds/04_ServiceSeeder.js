@@ -26,8 +26,8 @@ class ServiceSeeder {
     );
     const ids = services.map(service => service.id);
 
-    const admin = await User.findBy("username", "admin");
-    const subs = await User.findBy("username", "subs");
+    const admin = await User.findByOrFail("username", "admin");
+    const subs = await User.findByOrFail("username", "subs");
 
     await Promise.all(
       [admin, subs].map(user =>
