@@ -10,14 +10,9 @@ At the beginning of the configuration of the project you need to have to install
 
 > MacOS - https://postgresapp.com/
 
-###### Adonis CLI
+###### Generate the secret key
 ```bash
-npm i -g @adonisjs/cli
-```
-
-###### Generate the AppKey
-```bash
-ssh-keygen -t rsa
+adonis key:generate
 ```
 
 
