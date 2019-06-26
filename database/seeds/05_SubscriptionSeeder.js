@@ -31,7 +31,7 @@ class ServiceSeeder {
       .fetch();
     await Promise.all(
       products.map((product, index) =>
-        Subscription.buy(product.id, card, [admin, subs][index])
+        Product.buy(product.id, card, [admin, subs][index])
       )
     );
   }
