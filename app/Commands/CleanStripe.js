@@ -18,47 +18,50 @@ class CleanStripe extends Command {
     const username = await this.ask("Enter your username:");
     const password = await this.secure("Password:");
 
-    const user = await User.findByOrFail({ username });
-    const checkPassword = await Hash.verify(password, user.password);
+    let checkPassword = false;
 
-    if (user.username === username && checkPassword) {
-      const confirm = await this.confirm(
-        "Are you sure you want to delete all test Stripe objects?"
+    try {
+      const user = await User.findBy({ username });
+      checkPassword = await Hash.verify(password, user.password);
+    } catch (e) {
+      this.error(`${this.icon("error")} User not defined`);
+      Database.close();
+      return;
+    }
+
+    if (checkPassword) {
+      const confirm = await this.confirm("Are you sure?");
+      if (!confirm) return;
+
+      const { rows: users } = await User.query()
+        .whereNotNull("customer")
+        .fetch();
+      const usersResult = await Promise.all(
+        users.map(client => User.removeCustomer(client.customer))
       );
 
-      if (confirm) {
-        const { rows: users } = await User.query()
-          .whereNotNull("customer")
-          .fetch();
-        const { rows: products } = await Product.query()
-          .whereNotNull("product")
-          .fetch();
+      const { rows: products } = await Product.query()
+        .whereNotNull("product")
+        .fetch();
+      const productsResult = await Promise.all(
+        products.map(product =>
+          Product.removeProductPlan(product.product, product.plan)
+        )
+      );
 
-        const isUserRemoved = await Promise.all(
-          users.map(client => User.removeCustomer(client.customer))
-        );
-
-        const isProductRemoved = await Promise.all(
-          products.map(product =>
-            Product.removeProductPlan(product.product, product.plan)
-          )
-        );
-
-        if (
-          !isUserRemoved.includes(false) &&
-          !isProductRemoved.includes(false)
-        ) {
-          this.success(`${this.icon("success")} Success!`);
-        } else {
-          this.error(
-            `${this.icon("error")} Error: some items have not been deleted`
-          );
-        }
+      /* eslint-disable */
+      if (!usersResult.includes(false) && !productsResult.includes(false)) {
+        this.success(`${this.icon("success")} [${usersResult.length}] customers were deleted!`);
+        this.success(`${this.icon("success")} [${productsResult.length}] products were deleted!`);
+      } else {
+        this.warn(`${this.icon("warn")} Not all entities have been deleted:
+          ${users.length > usersResult.length ? '\n[${usersResult.length}] customers <<<' : ''}
+          ${products.length > productsResult.length ? '\n[${productsResult.length}] products <<<' : ''}
+        `);
       }
+      /* eslint-enable */
     } else {
-      this.warn(
-        `${this.icon("error")} Access is denied: Wrong login or password`
-      );
+      this.error(`${this.icon("error")} Wrong login or password`);
     }
 
     Database.close();
