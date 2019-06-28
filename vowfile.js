@@ -33,10 +33,35 @@ module.exports = (cli, runner) => {
     |
     */
     await ace.call("migration:run");
-    await ace.call("seed", {}, { silent: true });
+    await ace.call("seed", {}, {});
   });
 
   runner.after(async () => {
+    /*
+    |--------------------------------------------------------------------------
+    | Delete Stripe test data
+    |--------------------------------------------------------------------------
+    |
+    | Delete Stripe test data before data is deleted
+    |
+    */
+    await ace.call("clean:local", {
+      username: "admin",
+      password: 1234567,
+      confirm: true
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rollback migrations
+    |--------------------------------------------------------------------------
+    |
+    | Once all tests have been completed, we should reset the database to it's
+    | original state
+    |
+    */
+    await ace.call("migration:reset", {}, {});
+
     /*
     |--------------------------------------------------------------------------
     | Shutdown server
@@ -48,17 +73,5 @@ module.exports = (cli, runner) => {
     use("Adonis/Src/Server")
       .getInstance()
       .close();
-
-    /*
-    |--------------------------------------------------------------------------
-    | Rollback migrations
-    |--------------------------------------------------------------------------
-    |
-    | Once all tests have been completed, we should reset the database to it's
-    | original state
-    |
-    */
-    await ace.call("clean:stripe");
-    await ace.call("migration:reset", {}, { silent: true });
   });
 };
