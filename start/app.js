@@ -58,6 +58,6 @@ const aliases = {
 | Here you store ace commands for your package
 |
 */
-const commands = ["App/Commands/CleanStripe"];
+const commands = ["App/Commands/CleanStripeLocal"];
 
 module.exports = { providers, aceProviders, aliases, commands };

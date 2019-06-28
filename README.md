@@ -54,10 +54,10 @@ Check code for errors.
 npm run lint
 ```
 
-#### Delete test data in Stripe 
-Delete test data in Stripe _(products, plans, customers, subscriptions)_. You need to enter **Admin credentials**.
+#### Delete local test data from Stripe 
+Delete local test data from Stripe  _(products, plans, customers, subscriptions)_. You need to enter **Admin credentials**.
 ```bash
-adonis clean:stripe
+adonis clean:local
 ```
 
 
