@@ -47,7 +47,7 @@ module.exports = (cli, runner) => {
     */
     await ace.call("clean:local", {
       username: "admin",
-      password: 1234567,
+      password: "1234567",
       confirm: true
     });
 
