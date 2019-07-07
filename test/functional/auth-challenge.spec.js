@@ -1,3 +1,5 @@
+const get = require("lodash/get");
+
 const Factory = use("Factory");
 const { test, trait } = use("Test/Suite")("Auth Challenge");
 
@@ -16,8 +18,8 @@ test("check user login", async ({ assert, client }) => {
 
   response.assertStatus(200);
   response.assertJSONSubset({ user: { id, username } });
-  assert.isString(response.body.token);
-  assert.isString(response.body.refreshToken);
+  assert.isString(get(response, ["body", "token"], null));
+  assert.isString(get(response, ["body", "refreshToken"], null));
 });
 
 test("check token refresh", async ({ assert, client }) => {
@@ -36,6 +38,6 @@ test("check token refresh", async ({ assert, client }) => {
     .end();
 
   refreshResponse.assertStatus(200);
-  assert.isString(refreshResponse.body.token);
-  assert.isString(refreshResponse.body.refreshToken);
+  assert.isString(get(refreshResponse, ["body", "token"], null));
+  assert.isString(get(refreshResponse, ["body", "refreshToken"], null));
 });
