@@ -36,7 +36,7 @@
     "@adonisjs/vow": "^1.0.17",
     "adonis-acl": "^1.1.1",
     "chance": "^1.0.18",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "pg": "7.4.3",
     "shortid": "^2.2.14",
